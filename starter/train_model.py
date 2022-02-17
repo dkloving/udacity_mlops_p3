@@ -8,7 +8,7 @@ import logging
 
 # Add the necessary imports for the starter code.
 from ml.data import process_data
-from ml.model import train_model
+from ml.model import train_model, compute_model_metrics, inference
 
 # setup logger
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
@@ -54,6 +54,12 @@ def fit_model(X_train, y_train):
     return model
 
 
+def eval_model(X_test, y_test, model):
+    logger.info("Evaluating Model")
+    preds = inference(model, X_test)
+    precision, recall, fbeta = compute_model_metrics(y_test, preds)
+    logger.info("Test Set Metrics: precision %f | recall %f | fbeta: %f", precision, recall, fbeta)
+    
 def save_model(save_dest, pipeline_objs=[]):
     # Train and save a model.
     logger.info("Saving pipeline to %s", save_dest)
@@ -61,9 +67,9 @@ def save_model(save_dest, pipeline_objs=[]):
     joblib.dump(pipeline, save_dest)
 
 if __name__ == '__main__':
-    X_train, y_train, _, _, encoder = prepare_data()
+    X_train, y_train, X_test, y_test, encoder = prepare_data()
     model = fit_model(X_train, y_train)
-    
+    eval_model(X_test, y_test, model)
     save_dest = 'model/trained_pipeline.pkl'
     pipeline_objs = [encoder, model]
     save_model(save_dest, pipeline_objs)
