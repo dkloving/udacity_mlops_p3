@@ -1,4 +1,4 @@
 outs:
-- md5: 5f483803f907f8fcdbe6bbf534898e12
+- md5: 50ce138c981087a2e68a3e4270e3b43b
   size: 34111
   path: trained_pipeline.pkl
