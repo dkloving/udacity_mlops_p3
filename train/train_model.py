@@ -61,6 +61,7 @@ def eval_model(X_test, y_test, model):
         recall,
         fbeta,
     )
+    return precision, recall, fbeta
 
 
 def save_model(save_dest, pipeline_objs=[]):
