@@ -18,7 +18,7 @@ logger = logging.getLogger()
 def prepare_data():
     logger.info("Reading data")
     data = pd.read_csv("data/census_clean.txt")
-    
+
     logger.info("Preprocessing data")
     train, test = train_test_split(data, test_size=0.20)
     cat_features = [
@@ -32,19 +32,16 @@ def prepare_data():
         "native-country",
     ]
     X_train, y_train, encoder, lb = process_data(
-                                        train,
-                                        categorical_features=cat_features,
-                                        label="salary",
-                                        training=True
-                                    )
+        train, categorical_features=cat_features, label="salary", training=True
+    )
     X_test, y_test, encoder, lb = process_data(
-                                        test,
-                                        categorical_features=cat_features,
-                                        label="salary",
-                                        training=False,
-                                        encoder=encoder,
-                                        lb=lb
-                                    )
+        test,
+        categorical_features=cat_features,
+        label="salary",
+        training=False,
+        encoder=encoder,
+        lb=lb,
+    )
     return X_train, y_train, X_test, y_test, encoder
 
 
@@ -58,18 +55,25 @@ def eval_model(X_test, y_test, model):
     logger.info("Evaluating Model")
     preds = inference(model, X_test)
     precision, recall, fbeta = compute_model_metrics(y_test, preds)
-    logger.info("Test Set Metrics: precision %f | recall %f | fbeta: %f", precision, recall, fbeta)
-    
+    logger.info(
+        "Test Set Metrics: precision %f | recall %f | fbeta: %f",
+        precision,
+        recall,
+        fbeta,
+    )
+
+
 def save_model(save_dest, pipeline_objs=[]):
     # Train and save a model.
     logger.info("Saving pipeline to %s", save_dest)
     pipeline = make_pipeline(*pipeline_objs)
     joblib.dump(pipeline, save_dest)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     X_train, y_train, X_test, y_test, encoder = prepare_data()
     model = fit_model(X_train, y_train)
     eval_model(X_test, y_test, model)
-    save_dest = 'model/trained_pipeline.pkl'
+    save_dest = "model/trained_pipeline.pkl"
     pipeline_objs = [encoder, model]
     save_model(save_dest, pipeline_objs)
