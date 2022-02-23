@@ -1,0 +1,4 @@
+outs:
+- md5: 859fb6f68d5d5696bc909c77be005fed
+  size: 13529
+  path: slice_output.html

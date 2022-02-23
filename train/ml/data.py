@@ -68,3 +68,11 @@ def process_data(
 
     X = np.concatenate([X_continuous, X_categorical], axis=1)
     return X, y, encoder, lb
+
+
+def slice_data(df, feature):
+    """ Slices data by holding a given categorical feature fixed.
+    """
+    for u in df[feature].unique():
+        df_temp = df[df[feature] == u]
+        yield df_temp, u

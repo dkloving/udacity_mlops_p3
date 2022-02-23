@@ -1,1 +1,4 @@
 /trained_pipeline.pkl
+/slice_output.csv
+/slice_output.html
+/trained_pipeline.joblib
