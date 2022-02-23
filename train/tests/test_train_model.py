@@ -16,7 +16,7 @@ def dummy_data():
     arr = np.zeros(shape=(10, 9))
     arr[:, -1] = 1
     df = pd.DataFrame(arr)
-    df.columns = train_model.CAT_FEATURES + ['salary']
+    df.columns = train_model.CAT_FEATURES + ["salary"]
     return df
 
 

@@ -30,10 +30,7 @@ def load_data():
 
 def fit_model(train_data):
     X, y, encoder, lb = process_data(
-        train_data,
-        categorical_features=CAT_FEATURES,
-        label="salary",
-        training=True
+        train_data, categorical_features=CAT_FEATURES, label="salary", training=True
     )
     model = train_model(X, y)
     return model, encoder, lb
@@ -57,12 +54,19 @@ def save_model(save_dest, pipeline_objs=[]):
     pipeline = make_pipeline(*pipeline_objs)
     joblib.dump(pipeline, save_dest)
 
-    
+
 def eval_slices(eval_data, model, encoder, lb, save_dest):
     df = pd.DataFrame(columns=["Feature", "Value", "Precision", "Recall", "fbeta"])
     for cat in CAT_FEATURES:
         for data, value in slice_data(eval_data, cat):
             precision, recall, fbeta = eval_model(data, model, encoder, lb)
             df.loc[len(df.index)] = [cat, value, precision, recall, fbeta]
-    df.to_html(save_dest, index=False, float_format=lambda x: str(x)[:4], border=0, justify='left', col_space=80)
-    df.to_csv(save_dest.replace('.html', '.csv'), index=False)
+    df.to_html(
+        save_dest,
+        index=False,
+        float_format=lambda x: str(x)[:4],
+        border=0,
+        justify="left",
+        col_space=80,
+    )
+    df.to_csv(save_dest.replace(".html", ".csv"), index=False)
