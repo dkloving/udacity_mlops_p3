@@ -29,8 +29,8 @@ def test_get_negative_prediction():
             "capital_gain": 2174,
             "capital_loss": 0,
             "hours_per_week": 40,
-            "native_country": "United-States"
-        }
+            "native_country": "United-States",
+        },
     )
     assert r.status_code == 200
     assert r.json() == {"prediction": "<=50k"}
@@ -53,8 +53,8 @@ def test_get_positive_prediction():
             "capital_gain": 217400,  # this is the only thing changed lol
             "capital_loss": 0,
             "hours_per_week": 40,
-            "native_country": "United-States"
-        }
+            "native_country": "United-States",
+        },
     )
     assert r.status_code == 200
     assert r.json() == {"prediction": ">50k"}

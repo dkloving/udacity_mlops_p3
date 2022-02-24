@@ -4,8 +4,7 @@ from pydantic import BaseModel
 import joblib
 
 
-app = FastAPI()
-model = None
+CLASS_TABLE = ["<=50k", ">50k"]
 
 
 class DataSample(BaseModel):
@@ -45,20 +44,21 @@ class DataSample(BaseModel):
         }
 
 
-@app.on_event("startup")
-def load_model():
-    global model
+def create_app():
+    app = FastAPI()
     model = joblib.load("model/trained_pipeline.joblib")
 
+    @app.get("/")
+    async def read_root():
+        return {"greeting": "Hai! OwO"}
 
-@app.get("/")
-async def read_root():
-    return {"greeting": "Hai! OwO"}
+    @app.post("/infer/")
+    async def infer(sample: DataSample):
+        df = pd.DataFrame.from_dict([sample.dict()])
+        pred = model.predict(df)[0]
+        return {"prediction": CLASS_TABLE[pred]}
+
+    return app
 
 
-@app.post("/infer/")
-async def infer(sample: DataSample):
-    df = pd.DataFrame.from_dict([sample.dict()])
-    pred = model.predict(df)
-    print(pred)
-    return {"model": str(pred)}
+app = create_app()

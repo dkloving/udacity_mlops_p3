@@ -20,7 +20,7 @@ TARGET = "salary"
 
 def load_data(split_seed=42):
     data = pd.read_csv("data/census_clean.txt")
-    data.columns = [c.replace('-', '_') for c in data.columns]
+    data.columns = [c.replace("-", "_") for c in data.columns]
     train, test = train_test_split(data, test_size=0.20, random_state=split_seed)
     return train, test
 
@@ -45,9 +45,6 @@ def process_data(data: pd.DataFrame, label: str, training: bool = True, lb=None)
         Processed data.
     y : np.array
         Processed labels if labeled=True, otherwise empty np.array.
-    encoder : sklearn.preprocessing._encoders.OneHotEncoder
-        Trained OneHotEncoder if training is True, otherwise returns the encoder passed
-        in.
     lb : sklearn.preprocessing._label.LabelBinarizer
         Trained LabelBinarizer if training is True, otherwise returns the binarizer
         passed in.
