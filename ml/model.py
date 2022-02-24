@@ -22,13 +22,16 @@ def get_classifier(categorical_columns):
     """
     preprocessing = ColumnTransformer(
         transformers=[
-            ('OneHot', OneHotEncoder(sparse=False, handle_unknown="ignore"), categorical_columns)
+            (
+                "OneHot",
+                OneHotEncoder(sparse=False, handle_unknown="ignore"),
+                categorical_columns,
+            )
         ],
-        remainder='passthrough'
+        remainder="passthrough",
     )
     pipeline = Pipeline(
-        [('preprocessing', preprocessing),
-         ('model', AdaBoostClassifier())]
+        [("preprocessing", preprocessing), ("model", AdaBoostClassifier())]
     )
     return pipeline
 
@@ -56,7 +59,7 @@ def compute_model_metrics(y, preds):
 
 
 def inference(clf, X):
-    """ Run model inferences and return the predictions.
+    """Run model inferences and return the predictions.
 
     Inputs
     ------

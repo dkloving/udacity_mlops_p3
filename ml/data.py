@@ -25,7 +25,7 @@ def load_data(split_seed=42):
 
 
 def process_data(data: pd.DataFrame, label: str, training: bool = True, lb=None):
-    """ Process the data used in the machine learning pipeline.
+    """Process the data used in the machine learning pipeline.
 
     Inputs
     ------
@@ -62,5 +62,3 @@ def process_data(data: pd.DataFrame, label: str, training: bool = True, lb=None)
         y = lb.transform(y.values).ravel()
 
     return X, y, lb
-
-

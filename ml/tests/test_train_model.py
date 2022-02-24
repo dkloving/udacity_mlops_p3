@@ -17,7 +17,11 @@ def dummy_data():
     arr = np.zeros(shape=(10, 14))
     arr[:, -1] = 1
     df = pd.DataFrame(arr)
-    df.columns = data.CAT_FEATURES + [f"num_{i}" for i in range(13-len(data.CAT_FEATURES))] + ["salary"]
+    df.columns = (
+        data.CAT_FEATURES
+        + [f"num_{i}" for i in range(13 - len(data.CAT_FEATURES))]
+        + ["salary"]
+    )
     return df
 
 
@@ -36,8 +40,7 @@ def fitted_model(processed_data):
 
 
 def test_process_data(processed_data):
-    """ Checks that process data correctly splits data into X and y
-    """
+    """Checks that process data correctly splits data into X and y"""
     X, y, lb = processed_data
     assert X.shape[1] == 13
     assert y.shape[0] == 10
@@ -45,16 +48,14 @@ def test_process_data(processed_data):
 
 
 def test_fit_model(fitted_model):
-    """Checks that we can get and train a model of the expected type.
-    """
+    """Checks that we can get and train a model of the expected type."""
     assert type(fitted_model) == Pipeline
-    assert type(fitted_model.named_steps['model']) == AdaBoostClassifier
-    assert type(fitted_model.named_steps['preprocessing']) == ColumnTransformer
+    assert type(fitted_model.named_steps["model"]) == AdaBoostClassifier
+    assert type(fitted_model.named_steps["preprocessing"]) == ColumnTransformer
 
 
 def test_save_model(tmpdir):
-    """Checks that we can save and load a model.
-    """
+    """Checks that we can save and load a model."""
     save_path = Path(tmpdir) / Path("tmp.joblib")
     clf = model.get_classifier(data.CAT_FEATURES)
     model.save_model(save_path, clf)
@@ -63,8 +64,7 @@ def test_save_model(tmpdir):
 
 
 def test_eval_model(processed_data, fitted_model):
-    """Check evaluation metrics are calculated correctly on dummy data.
-    """
+    """Check evaluation metrics are calculated correctly on dummy data."""
     X, y, _ = processed_data
     precision, recall, fbeta = model.eval_model(X, y, fitted_model)
     assert precision == 1.0 and recall == 1.0

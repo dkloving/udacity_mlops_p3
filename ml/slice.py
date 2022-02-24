@@ -10,8 +10,7 @@ logger = logging.getLogger()
 
 
 def slice_data(df, feature):
-    """ Slices data by holding a given categorical feature fixed.
-    """
+    """Slices data by holding a given categorical feature fixed."""
     for u in df[feature].unique():
         df_temp = df[df[feature] == u]
         yield df_temp, u
@@ -21,7 +20,9 @@ def eval_slices(eval_data, clf, lb, save_dest, slice_features):
     df = pd.DataFrame(columns=["Feature", "Value", "Precision", "Recall", "fbeta"])
     for feat in slice_features:
         for sample, feat_val in slice_data(eval_data, feat):
-            X_slice, y_slice, _ = data.process_data(sample, label=data.TARGET, training=False, lb=lb)
+            X_slice, y_slice, _ = data.process_data(
+                sample, label=data.TARGET, training=False, lb=lb
+            )
             precision, recall, fbeta = model.eval_model(X_slice, y_slice, clf)
             df.loc[len(df.index)] = [feat, feat_val, precision, recall, fbeta]
     df.to_html(

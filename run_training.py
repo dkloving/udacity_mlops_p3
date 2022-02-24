@@ -14,7 +14,9 @@ if __name__ == "__main__":
     train_data, test_data = data.load_data()
 
     logger.info("Preprocessing data")
-    X_train, y_train, lb = data.process_data(train_data, label=data.TARGET, training=True)
+    X_train, y_train, lb = data.process_data(
+        train_data, label=data.TARGET, training=True
+    )
 
     logger.info("Training Model")
     clf = model.fit_classifier(X_train, y_train, data.CAT_FEATURES)
@@ -24,10 +26,15 @@ if __name__ == "__main__":
     model.save_model(save_dest, clf)
 
     logger.info("Evaluating Model")
-    X_test, y_test, _ = data.process_data(train_data, label=data.TARGET, training=False, lb=lb)
+    X_test, y_test, _ = data.process_data(
+        train_data, label=data.TARGET, training=False, lb=lb
+    )
     precision, recall, fbeta = model.eval_model(X_test, y_test, clf)
     logger.info(
-        "Eval Metrics: precision %f | recall %f | fbeta: %f", precision, recall, fbeta,
+        "Eval Metrics: precision %f | recall %f | fbeta: %f",
+        precision,
+        recall,
+        fbeta,
     )
 
     slice_data_dest = "model/slice_output.html"
