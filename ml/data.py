@@ -6,12 +6,12 @@ from sklearn.preprocessing import LabelBinarizer
 CAT_FEATURES = [
     "workclass",
     "education",
-    "marital-status",
+    "marital_status",
     "occupation",
     "relationship",
     "race",
     "sex",
-    "native-country",
+    "native_country",
 ]
 
 
@@ -20,6 +20,7 @@ TARGET = "salary"
 
 def load_data(split_seed=42):
     data = pd.read_csv("data/census_clean.txt")
+    data.columns = [c.replace('-', '_') for c in data.columns]
     train, test = train_test_split(data, test_size=0.20, random_state=split_seed)
     return train, test
 
