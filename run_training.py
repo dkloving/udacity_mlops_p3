@@ -1,6 +1,7 @@
 import logging
+import pandas as pd
 
-from train import train_model
+from ml import model, data, slice
 
 
 # setup logger
@@ -10,21 +11,25 @@ logger = logging.getLogger()
 
 if __name__ == "__main__":
     logger.info("Reading data")
-    train_data, test_data = train_model.load_data()
+    train_data, test_data = data.load_data()
+
+    logger.info("Preprocessing data")
+    X_train, y_train, lb = data.process_data(train_data, label=data.TARGET, training=True)
 
     logger.info("Training Model")
-    model, encoder, lb = train_model.fit_model(train_data)
+    clf = model.fit_classifier(X_train, y_train, data.CAT_FEATURES)
 
     save_dest = "model/trained_pipeline.joblib"
     logger.info("Saving pipeline to %s", save_dest)
-    train_model.save_model(save_dest, [encoder, model])
+    model.save_model(save_dest, clf)
 
     logger.info("Evaluating Model")
-    precision, recall, fbeta = train_model.eval_model(test_data, model, encoder, lb)
+    X_test, y_test, _ = data.process_data(train_data, label=data.TARGET, training=False, lb=lb)
+    precision, recall, fbeta = model.eval_model(X_test, y_test, clf)
     logger.info(
         "Eval Metrics: precision %f | recall %f | fbeta: %f", precision, recall, fbeta,
     )
 
     slice_data_dest = "model/slice_output.html"
-    logger.info("Evaluating sodel on slices and writing to %s", slice_data_dest)
-    train_model.eval_slices(test_data, model, encoder, lb, slice_data_dest)
+    logger.info("Evaluating model on slices and writing to %s", slice_data_dest)
+    slice.eval_slices(test_data, clf, lb, slice_data_dest, data.CAT_FEATURES)
