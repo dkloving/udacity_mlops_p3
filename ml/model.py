@@ -86,6 +86,10 @@ def save_model(save_dest, model):
     joblib.dump(model, save_dest)
 
 
+def load_model(model_file):
+    return joblib.load(model_file)
+
+
 def eval_model(X, y, clf):
     preds = inference(clf, X)
     precision, recall, fbeta = compute_model_metrics(y, preds)
