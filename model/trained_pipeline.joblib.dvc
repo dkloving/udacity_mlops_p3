@@ -1,4 +1,4 @@
 outs:
-- md5: 5f5e75730d27e451c14cf26ca24018c5
-  size: 35583
+- md5: 1e97d611d7ca8b31411d7f3c2c25da9a
+  size: 34958
   path: trained_pipeline.joblib
