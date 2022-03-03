@@ -65,6 +65,7 @@ def create_app():
 # get model via DVC (thanks to https://ankane.org/dvc-on-heroku)
 if "DYNO" in os.environ:
     os.system("dvc config core.no_scm true")
+    os.system("dvc pull")
     os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 
