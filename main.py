@@ -66,7 +66,6 @@ def create_app():
 if "DYNO" in os.environ:
     os.system("dvc config core.no_scm true")
     os.system("dvc pull")
-    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 
 app = create_app()
