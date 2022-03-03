@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 from fastapi import FastAPI
 from pydantic import BaseModel
@@ -59,6 +60,12 @@ def create_app():
         return {"prediction": CLASS_TABLE[pred]}
 
     return app
+
+
+# get model via DVC (thanks to https://ankane.org/dvc-on-heroku)
+if "DYNO" in os.environ:
+    os.system("dvc config core.no_scm true")
+    os.system("rm -r .dvc .apt/usr/lib/dvc")
 
 
 app = create_app()
