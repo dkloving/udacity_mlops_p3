@@ -40,3 +40,5 @@ The app is live at `https://gentle-thicket-08491.herokuapp.com/`
 
 
 ![API Example](live_post.png)
+
+![Continuous Deployment](continuous_deloyment.png)
